@@ -143,15 +143,24 @@ def run(playwright: Playwright) -> None:
         # Login once
         logging.info("Navigating to login page")
         page.goto(f"https://{vanity_name}.visier.com/VServer/auth")
-        page.get_by_role("textbox", name="Username").fill(username)
-        page.get_by_role("textbox", name="Password").fill(password)
-        page.get_by_role("button", name="Sign in").click()
         
         if vanity_name == 'augeointegration':
+            page.get_by_role("textbox", name="Username").fill(username)
+            page.get_by_role("textbox", name="Password").fill(password)
+            page.get_by_role("button", name="Sign in").click()
             # Wait for main page to load
             page.wait_for_selector("div[row-id]", timeout=60000)
             tenantPage = page
         else:
+            page.get_by_role("textbox", name="Username").click()
+            page.get_by_role("textbox", name="Username").fill(username)
+            page.get_by_role("textbox", name="Username").press("Tab")
+            page.get_by_role("textbox", name="Password").fill(password)
+            page.get_by_role("button", name="Sign In").click()
+            page.get_by_role("button", name="Send Push").click()
+            logging.info("Waiting for user to approve push notification...")
+            page.wait_for_selector("span.tool-title:text('Home')", timeout=60000)
+            logging.info("Push approved, proceeding to the next step.")
             with page.expect_popup() as page1_info:
                 page.get_by_role("listitem").filter(has_text="Studio").locator("span").first.click()
             page1 = page1_info.value
