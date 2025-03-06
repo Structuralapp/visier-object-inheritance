@@ -1,0 +1,22 @@
+general:
+  default_env: augeointegration
+  
+augeointegration:
+  credentials:
+    username: xxxxx@augeocorp.net
+    password: xxxxx
+  settings:
+    tenants: WFF_a8g3opoc~sandbox, WFF_a8g3opoc~v10test
+    vanity_name: augeointegration
+    headless: true
+    browser_type: chrome
+
+augeo:
+  credentials:
+    username: xxxxx@augeocorp.net
+    password: xxxxx
+  settings:
+    tenants: WFF_a8g3o~encorevalues, WFF_a8g3o~ey
+    vanity_name: augeo
+    headless: true
+    browser_type: chrome

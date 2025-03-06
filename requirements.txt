@@ -1,0 +1,6 @@
+playwright==1.50.0
+pandas==2.0.3
+numpy==1.24.3
+xlrd==2.0.1
+pyyaml==6.0.2
+openpyxl==3.1.5

@@ -1,0 +1,16 @@
+.ipynb_checkpoints/
+dist/*
+extract/*
+logs/*
+output/*
+zip/*
+!extract/.gitkeep
+!logs/.gitkeep
+!output/.gitkeep
+!zip/.gitkeep
+visier_browser_automation.py
+visier-object-views 
+visier-object-views.py
+visier-object-views.ipynb
+visier-object-views.spec
+.DS_Store
