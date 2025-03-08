@@ -33,6 +33,23 @@ def process_xls_files(base_folder):
     data_dict = {}
     folder_count = 0
     file_count = 0
+    files_to_process = ['Subjects.xls'
+                        'Selection_Groups.xls',
+                        'Selection_Concepts.xls',
+                        'Range_Dimensions.xls',
+                        'Overlays.xls',
+                        'Multi_Subject_Rules.xls',
+                        'Modules.xls',
+                        'Metrics.xls',
+                        'Member_Maps.xls',
+                        'Mappings.xls',
+                        'Internal_Comparisons.xls',
+                        'Events.xls',
+                        'Dimensions.xls',
+                        'Currencies.xls',
+                        'Business_Rules.xls',
+                        'Business_Calendar.xls',
+                        'Analyses.xls']
 
     for folder in os.listdir(base_folder):
         folder_path = os.path.join(base_folder, folder)
@@ -44,7 +61,7 @@ def process_xls_files(base_folder):
             data_dict[folder_prefix] = {}
             folder_count += 1
 
-            for file in os.listdir(folder_path):
+            for file in files_to_process:
                 if file.endswith(".xls"):
                     file_count += 1
                     file_path = os.path.join(folder_path, file)
@@ -59,8 +76,30 @@ def process_xls_files(base_folder):
                         second_tab = sheet_names[1]  
                         df = xls.parse(second_tab)
 
-                        if "Object Name" in df.columns and "Content Type" in df.columns:
-                            data_dict[folder_prefix][second_tab] = df[["Object Name", "Content Type"]].dropna().to_dict(orient="records")
+                        # Define required and optional columns
+                        required_columns = ["Object Name", "Content Type"]
+                        optional_columns = ["Related Applications", "Tags", "Display Name"]
+
+                        # Mapping for Content Type values
+                        content_type_mapping = {
+                            "Custom": "Tenant",
+                            "Modified Default": "Tenant override",
+                            "Default": "Blueprint"
+}
+
+                        # Check if required columns exist
+                        if all(col in df.columns for col in required_columns):
+                            # Ensure optional columns exist, adding them with None if missing
+                            for col in optional_columns:
+                                if col not in df.columns:
+                                    df[col] = None
+                            
+                            # Apply mapping to "Content Type" column
+                            df["Content Type"] = df["Content Type"].map(content_type_mapping).fillna(df["Content Type"])
+                            # Select only relevant columns
+                            selected_columns = required_columns + optional_columns
+                            data_dict[folder_prefix][second_tab] = df[selected_columns].dropna(subset=required_columns).to_dict(orient="records")
+
                             logging.info(f"Processed: {file} (Sheet: {second_tab})")
                         else:
                             logging.warning(f"Skipping {file}, missing required columns")
@@ -79,9 +118,9 @@ def save_to_excel(data_dict, output_folder, timestamp):
     for folder_prefix, sheets in data_dict.items():
         for tab_name, records in sheets.items():
             for record in records:
-                rows.append([folder_prefix, tab_name, record["Object Name"], record["Content Type"]])
+                rows.append([folder_prefix, tab_name, record["Display Name"], record["Object Name"], record["Tags"], record["Related Applications"], record["Content Type"]])
 
-    df = pd.DataFrame(rows, columns=["Tenant Name", "Analytic Object", "Object Name", "Content Type"])
+    df = pd.DataFrame(rows, columns=["Tenant Name", "Analytic Object", "Display Name", "Object Name", "Tags", "Related Applications", "Content Type"])
     try:
         df.to_excel(output_file, index=False, engine="openpyxl")
         logging.info(f"Processed data saved to {output_file}")

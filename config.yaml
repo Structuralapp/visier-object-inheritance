@@ -1,5 +1,5 @@
 general:
-  default_env: augeointegration
+  default_env: augeo
   
 augeointegration:
   credentials:
@@ -16,7 +16,10 @@ augeo:
     username: xxxxx@augeocorp.net
     password: xxxxx
   settings:
-    tenants: WFF_a8g3o~encorevalues, WFF_a8g3o~ey
+    tenants: >
+      WFF_a8g3o~encorevalues, WFF_a8g3o~ey, WFF_a8g3o~pg, WFF_a8g3o~usbank, WFF_a8g3o~mckesson,WFF_a8g3o~newhorizon,
+      WFF_a8g3o~mazdat,WFF_a8g3o~inclhealth,WFF_a8g3o~intermountain, WFF_a8g3o~magnite, WFF_a8g3o~shakeshack,
+      WFF_a8g3o~smpa, WFF_a8g3o~tinuiti, WFF_a8g3o~tmobileaz
     vanity_name: augeo
     headless: true
     browser_type: chrome
