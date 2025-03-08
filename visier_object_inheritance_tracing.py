@@ -9,6 +9,7 @@ import sys
 import yaml
 from my_utils.visier_object_tracing_utils import *
 
+
 # Get the directory where the .exe file is located
 base_path = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.getcwd()
 
@@ -95,15 +96,17 @@ def download_for_tenant(page, tenant):
     """Handles the entire download process for a given tenant."""
     logging.info(f"Starting processing for tenant: {tenant}")
     try:
-        # Wait for the correct tenant row to appear
-        page.wait_for_selector(f"div[row-id='{tenant}'] clr-icon[data-idx='3']", timeout=60000)
+        page1 = page
+        if tenant != 'Augeo':
+            # Wait for the correct tenant row to appear
+            page.wait_for_selector(f"div[row-id='{tenant}'] clr-icon[data-idx='3']", timeout=60000)
 
-        with page.expect_popup() as page1_info:
-            logging.info(f"Clicking on tenant row: {tenant}")
-            page.locator(f"div[row-id='{tenant}'] clr-icon[data-idx='3']").click(force=True)
+            with page.expect_popup() as page1_info:
+                logging.info(f"Clicking on tenant row: {tenant}")
+                page.locator(f"div[row-id='{tenant}'] clr-icon[data-idx='3']").click(force=True)
 
-        page1 = page1_info.value
-        logging.info(f"Popup window opened for tenant: {tenant}")
+            page1 = page1_info.value
+            logging.info(f"Popup window opened for tenant: {tenant}")
 
         # Click through navigation steps
         safe_click(page1, "gridcell", "Release")
@@ -117,7 +120,7 @@ def download_for_tenant(page, tenant):
             download = download_info.value
 
         # Rename file with tenant name
-        new_filename = f"{tenant.split('~')[1].capitalize()}_{download.suggested_filename}"
+        new_filename = f"{tenant}_{download.suggested_filename}" if tenant == "Augeo" else f"{tenant.split('~')[1].capitalize()}_{download.suggested_filename}" 
         download_path_final = os.path.join(download_path, new_filename)
 
         # Wait for download to complete
@@ -164,6 +167,13 @@ def run(playwright: Playwright) -> None:
             with page.expect_popup() as page1_info:
                 page.get_by_role("listitem").filter(has_text="Studio").locator("span").first.click()
             page1 = page1_info.value
+            parentPage = page1.url
+
+            page1.get_by_role("link", name="Projects").click()
+            
+            download_for_tenant(page1, 'Augeo')
+
+            page1.goto(parentPage)
             page1.get_by_role("link", name="Tenants").click()
             tenantPage = page1
 
