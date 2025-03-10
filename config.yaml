@@ -3,7 +3,7 @@ general:
   
 augeointegration:
   credentials:
-    username: xxxxx@augeocorp.net
+    username: xxxxx@xxxxx.xxx
     password: xxxxx
   settings:
     tenants: WFF_a8g3opoc~sandbox, WFF_a8g3opoc~v10test
@@ -13,7 +13,7 @@ augeointegration:
 
 augeo:
   credentials:
-    username: xxxxx@augeocorp.net
+    username: xxxxx@xxxxx.xxx
     password: xxxxx
   settings:
     tenants: >
