@@ -17,9 +17,9 @@ augeo:
     password: xxxxx
   settings:
     tenants: >
-      WFF_a8g3o~encorevalues, WFF_a8g3o~ey, WFF_a8g3o~pg, WFF_a8g3o~usbank, WFF_a8g3o~mckesson,WFF_a8g3o~newhorizon,
-      WFF_a8g3o~mazdat,WFF_a8g3o~inclhealth,WFF_a8g3o~intermountain, WFF_a8g3o~magnite, WFF_a8g3o~shakeshack,
-      WFF_a8g3o~smpa, WFF_a8g3o~tinuiti, WFF_a8g3o~tmobileaz
+      WFF_a8g3o~encorevalues, WFF_a8g3o~xx, WFF_a8g3o~xx, WFF_a8g3o~xxxx, WFF_a8g3o~xxxx,WFF_a8g3o~xxxx,
+      WFF_a8g3o~xxxxx,WFF_a8g3o~xxxxx,WFF_a8g3o~xxxx, WFF_a8g3o~xxxx, WFF_a8g3o~xxxxx,
+      WFF_a8g3o~xxxx, WFF_a8g3o~xxxxx, WFF_a8g3o~xxxxx
     vanity_name: augeo
     headless: true
     browser_type: chrome
