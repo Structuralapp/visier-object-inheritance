@@ -139,7 +139,8 @@ def download_for_tenant(page, tenant):
 
 def run(playwright: Playwright) -> None:
     logging.info(f"Opening a {browser_type} browser in headless mode set to '{headless}'.")
-    browser = playwright.chromium.launch(channel=browser_type if browser_type == "chrome" else None, headless=headless)
+    # browser = playwright.chromium.launch(channel=browser_type if browser_type == "chrome" else None, headless=headless)
+    browser = playwright.chromium.launch(headless=headless)
     context = browser.new_context(accept_downloads=True)
     page = context.new_page()
     try:
